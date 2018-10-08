@@ -50,13 +50,17 @@
   },
   "dependencies": {
     "@devery/devery": "^0.1.12",
+    "ipfs-api": "^24.0.2",
     "lodash": "4.17.11",
     "npm-check-updates": "^2.14.2",
+    "orbit-db": "^0.19.9",
     "prop-types": "15.6.2",
     "react": "^16.5.1",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.5.1",
-    "react-hot-loader": "4.3.8"
+    "react-hot-loader": "4.3.8",
+    "uuid": "^3.3.2",
+    "web3": "^1.0.0-beta.36"
   },
   "resolutions": {
     "babel-core": "7.0.0-bridge.0"
