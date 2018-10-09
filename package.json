@@ -10,13 +10,6 @@
     "test": "jest --watchAll --coverage",
     "precommit": "lint-staged"
   },
-  "lint-staged": {
-    "*.{js,jsx,css,md}": [
-      "prettier --write --single-quote",
-      "eslint --fix",
-      "git add"
-    ]
-  },
   "jest": {
     "testEnvironment": "jsdom",
     "moduleDirectories": [
