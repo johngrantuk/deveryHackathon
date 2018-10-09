@@ -20,11 +20,21 @@ class App extends Component {
     super(props, context);
 
     this.handleInfoChange = this.handleInfoChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleProduct = this.handleProduct.bind(this);
     this.handleMark = this.handleMark.bind(this);
     this.handleGenerateItem = this.handleGenerateItem.bind(this);
     this.handleCheckItem = this.handleCheckItem.bind(this);
+    this.handleGetBrand = this.handleGetBrand.bind(this);
+    this.handleBrandAddrChange = this.handleBrandAddrChange.bind(this);
+    this.handleAddBrandAddrChange = this.handleAddBrandAddrChange.bind(this);
+    this.handleAddBrandNameChange = this.handleAddBrandNameChange.bind(this);
+    this.handleAddBrand = this.handleAddBrand.bind(this);
+
+    this.handleGetProduct = this.handleGetProduct.bind(this);
+    this.handleProductAddrChange = this.handleProductAddrChange.bind(this);
+    this.handleAddProductAddrChange = this.handleAddProductAddrChange.bind(this);
+    this.handleAddProductNameChange = this.handleAddProductNameChange.bind(this);
+    this.handleAddProduct = this.handleAddProduct.bind(this);
 
     this.state = {
       info: '',
@@ -40,6 +50,8 @@ class App extends Component {
       itemAppAccount: '',
       noApps: '0',
       account: 'Please sign in to MetaMask',
+      checkBrandAddr: '',
+      brandInfo: ''
     };
     // console.log(devery.Utils.getRandomAddress());
 
@@ -58,13 +70,48 @@ class App extends Component {
     }
   }
 
-  handleInfoChange(e) {
-    this.setState({ info: e.target.value });
+  handleBrandAddrChange(e){
+    this.setState({checkBrandAddr: e.target.value});
   }
 
-  handleSubmit() {
+  handleAddBrandAddrChange(e){
+    this.setState({addBrandAddr: e.target.value});
+  }
+
+  handleAddBrandNameChange(e){
+    this.setState({addBrandName: e.target.value});
+  }
+
+  handleAddBrand(){
+    this.addBrand(this.state.addBrandAddr, this.state.addBrandName);
+  }
+
+  handleGetBrand(){
     this.getBrand();
-    dbHelper.LoadUsersCar(this.state.account);
+  }
+
+  handleProductAddrChange(e){
+    this.setState({checkProductAddr: e.target.value})
+  }
+
+  handleAddProductAddrChange(e){
+    this.setState({addProductAddr: e.target.value});
+  }
+
+  handleAddProductNameChange(e){
+    this.setState({addProductName: e.target.value});
+  }
+
+  handleAddProduct(){
+    this.addProduct(this.state.addProductAddr, this.state.addProductName);
+  }
+
+  handleGetProduct(){
+    this.getProduct();
+  }
+
+  handleInfoChange(e) {
+    this.setState({ info: e.target.value });
   }
 
   handleProduct() {
@@ -119,38 +166,51 @@ class App extends Component {
   }
 
   async getBrand() {
-    const brand = await deveryRegistryClient.getBrand(this.state.brandAddr);
+    console.log('Getting brand info: ' + this.state.checkBrandAddr);
+    const brand = await deveryRegistryClient.getBrand(this.state.checkBrandAddr);
     if (!brand.active) {
-      this.setState({ brandName: 'Creating brand, waiting for approval...' });
-      transaction = await deveryRegistryClient.addBrand(
-        '0xf8b908e7DBb3a0f2581aa8F1962f9360e10DC059',
-        'Garage Brand',
-      );
+      console.log('No brand');
+      this.setState({ brandInfo: 'No Brand' });
     } else {
-      this.setState({ brandName: brand.brandName });
+      console.log(brand);
+      this.setState({ brandInfo: brand });
+    }
+  }
+
+  async addBrand(Addr, Name){
+    console.log('Adding Brand: ' + Addr + ', ' + Name);
+    try {
+      const brand = await deveryRegistryClient.addBrand(Addr, Name);
+    }
+    catch (err) {
+      console.log(err);
     }
   }
 
   async getProduct() {
-    const product = await deveryRegistryClient.getProduct(
-      this.state.productAddress,
-    );
-    if (product.active) {
-      console.log('Product Details:');
-      console.log(product.details);
-      this.setState({ productName: product.description });
+    console.log('Getting Product info: ' + this.state.checkProductAddr);
+    const Product = await deveryRegistryClient.getProduct(this.state.checkProductAddr);
+    if (!Product.active) {
+      console.log('No Product');
+      this.setState({ productInfo: 'No product' });
     } else {
-      this.setState({
-        productName: 'Creating Product, waiting for approval...',
-      });
-      const transaction = await deveryRegistryClient.addProduct(
-        proAddress,
-        'MOT',
+      console.log(Product);
+      this.setState({ productInfo: Product });
+    }
+  }
+
+  async addProduct(Addr, Name){
+    console.log('Adding product: ' + Addr + ', ' + Name);
+    try {
+      const product = await deveryRegistryClient.addProduct(
+        Addr,
+        Name,
         'Accredited: 7823B12AE',
         1999,
-        'Kirknewton',
-      );
-      // console.log('transaction address',transaction.hash);
+        'Kirknewton')
+    }
+    catch (err) {
+      console.log(err);
     }
   }
 
@@ -187,16 +247,55 @@ class App extends Component {
         </Jumbotron>
 
         <FormGroup controlId="formControlsTextarea">
-          <ControlLabel>Brand: {this.state.brandName}</ControlLabel>
+          <ControlLabel>Get Brand Info:</ControlLabel>
+          <FormControl
+            type="text"
+            placeholder="Brand Address"
+            onChange={this.handleBrandAddrChange}
+          />
           <FormControl
             componentClass="textarea"
-            value={this.state.info}
-            placeholder="e.g. I saw this in Scotland in July."
-            onChange={this.handleInfoChange}
+            value={this.state.brandInfo}
           />
-          <Button bsStyle="primary" onClick={this.handleSubmit}>
-            Get/Add Brand
-          </Button>
+          <Button bsStyle="primary" onClick={this.handleGetBrand}>Get Brand Info</Button>
+
+          <FormControl
+            type="text"
+            placeholder="Brand Address"
+            onChange={this.handleAddBrandAddrChange}
+          />
+          <FormControl
+            type="text"
+            placeholder="Brand Name"
+            onChange={this.handleAddBrandNameChange}
+          />
+        <Button bsStyle="primary" onClick={this.handleAddBrand}>Add Brand</Button>
+        </FormGroup>
+
+        <FormGroup controlId="formControlsTextarea">
+          <ControlLabel>Get Product Info:</ControlLabel>
+          <FormControl
+            type="text"
+            placeholder="Product Address"
+            onChange={this.handleProductAddrChange}
+          />
+          <FormControl
+            componentClass="textarea"
+            value={this.state.productInfo}
+          />
+        <Button bsStyle="primary" onClick={this.handleGetProduct}>Get Product Info</Button>
+
+          <FormControl
+            type="text"
+            placeholder="Product Address"
+            onChange={this.handleAddProductAddrChange}
+          />
+          <FormControl
+            type="text"
+            placeholder="Product Name"
+            onChange={this.handleAddProductNameChange}
+          />
+        <Button bsStyle="primary" onClick={this.handleAddProduct}>Add Product</Button>
         </FormGroup>
 
         <FormGroup controlId="formControlProduct">

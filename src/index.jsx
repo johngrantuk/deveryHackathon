@@ -5,5 +5,5 @@ import AppTest from './AppTest.jsx';
 
 ReactDOM.render(
   //<App />, document.getElementById('app')
-  <AppTest />, document.getElementById('app');
+  <AppTest />, document.getElementById('app')
   );
