@@ -59,6 +59,44 @@ export const LoadUsersCar = async UserAccount => {
   }
 };
 
+export const LoadCars = async () => {
+  console.log('Loading Cars...')
+  ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+  orbitdb = new OrbitDB(ipfs);
+  const db = await orbitdb.docs('cars');
+  await db.load();
+
+  const all = db.query(doc => doc);
+
+  if (all.length == 0) {
+    console.log('No Cars');
+    return [];
+  } else {
+    console.log('Cars: ');
+    console.log(all);
+    return all;
+  }
+};
+
+export const LoadServices = async () => {
+  console.log('Loading Services...')
+  ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+  orbitdb = new OrbitDB(ipfs);
+  const db = await orbitdb.docs('services');
+  await db.load();
+
+  const all = db.query(doc => doc);
+
+  if (all.length == 0) {
+    console.log('No Services');
+    return [];
+  } else {
+    console.log('Services: ');
+    console.log(all);
+    return all;
+  }
+};
+
 export const saveCar = async Car => {
   console.log('Saving car...');
   console.log(Car);
@@ -71,27 +109,14 @@ export const saveCar = async Car => {
   console.log('Ok.');
 };
 
-export const saveCarOld = async (
-  Owner,
-  Type,
-  Model,
-  Year,
-  PicHash,
-  IsSelling,
-) => {
+export const saveService = async Service => {
+  console.log('Saving service...');
+  console.log(Service);
   ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
   orbitdb = new OrbitDB(ipfs);
-  const db = await orbitdb.docs('cars');
+  const db = await orbitdb.docs('services');
   await db.load();
 
-  const hash = await db.put({
-    _id: uuid.v4(),
-    owner: Owner,
-    type: Type,
-    model: Model,
-    year: Year,
-    picHash: PicHash,
-    isSelling: IsSelling,
-    created: new Date(),
-  });
+  const hash = await db.put(Service);
+  console.log('Ok.');
 };

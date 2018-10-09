@@ -14,6 +14,8 @@ import uuid from 'uuid';
 
 const dbHelper = require('./libs/orbitHelper');
 
+const devery = require('@devery/devery');
+
 export default class AddUser extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -26,12 +28,70 @@ export default class AddUser extends React.Component {
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleYearChange = this.handleYearChange.bind(this);
     this.handleSaleChange = this.handleSaleChange.bind(this);
+    this.handleCompanyNameChange = this.handleCompanyNameChange.bind(this);
+    this.handleServiceTypeChange = this.handleServiceTypeChange.bind(this);
+    this.handleAddService = this.handleAddService.bind(this);
+    this.handleCreateService = this.handleCreateService.bind(this);
 
     this.state = {
       show: false,
       carOwner: true,
       isForSale: false,
+      services: []
     };
+  }
+
+
+  handleCreateService(){
+    const service = {
+      _id: uuid.v4(),
+      owner: this.props.account,
+      name: this.state.companyName,
+      services: this.state.services
+    }
+
+    this.AddService(service);
+  }
+
+  async AddService(Service) {
+    let address = devery.Utils.getRandomAddress();
+    console.log('Adding Service Brand: ' + address + ': ' + Service.name);
+    await this.props.deveryRegistryClient.addBrand(address, Service.name);
+
+    var arrayLength = Service.services.length;
+    for (var i = 0; i < arrayLength; i++) {
+      let service = Service.services[i];
+      console.log('Adding Service Product: ' + service.address + ', ' + service.serviceType + ', ' + Service.owner + ', ' + '2018, ' + Service.name);
+      await this.props.deveryRegistryClient.addProduct(service.address, service.serviceType, Service.owner, 2018, Service.name);
+    }
+
+    console.log('Saving Service to db...')
+    await dbHelper.saveService(service);
+    console.log('DONE');
+  }
+
+  async AddServiceProduct(Owner, Name, ServiceProduct) {
+    console.log('Adding Service Product: ' + service.address + ', ' + service.serviceType + ', ' + Owner + ', ' + '2018, ' + Name);
+    await this.props.deveryRegistryClient.addProduct(service.address, service.serviceType, Owner, 2018, Name);
+  }
+
+  handleAddService(){
+    let services = this.state.services;
+    let address = devery.Utils.getRandomAddress();
+    services.push({
+      serviceType: this.state.serviceType,
+      address: address
+    });
+
+    this.setState({services: services});
+  }
+
+  handleServiceTypeChange(e){
+    this.setState({serviceType: e.target.value });
+  }
+
+  handleCompanyNameChange(e){
+    this.setState({companyName: e.target.value });
   }
 
   handleSaleChange(e) {
@@ -58,7 +118,21 @@ export default class AddUser extends React.Component {
   }
 
   handleShow() {
+    //this.checkBrand()
     this.setState({ show: true });
+  }
+
+  async checkBrand() {
+    console.log('Checking brand: ' + this.props.account);
+    const brand = await this.props.deveryRegistryClient.getBrand(this.props.account);
+
+    console.log(brand);
+    if (brand.active) {
+      this.setState({ isBrandActive: true });
+      this.setState({ brandName: brand.brandName});
+    } else {
+      this.setState({ isBrandActive: false });
+    }
   }
 
   handleCreate() {
@@ -126,7 +200,44 @@ export default class AddUser extends React.Component {
         </div>
       );
     } else {
-      signUp = <h3>SERVICE</h3>;
+      if(this.state.isBrandActive){
+        signUp = (
+        <div>
+          <h3>You already have a service company setup: {this.state.brandName}</h3>
+          <h3>Please use another account.</h3>
+        </div>
+      );
+      }else{
+        signUp = (
+          <div>
+            <h3>SERVICE</h3>
+            <FormGroup controlId="formControlsService">
+              <ControlLabel>Your Account:</ControlLabel>
+              <FormControl type="text" value={this.props.account} readOnly />
+              <ControlLabel>Company Name:</ControlLabel>
+              <FormControl
+                type="text"
+                placeholder="e.g. Local Garage"
+                onChange={this.handleCompanyNameChange}
+              />
+              <ControlLabel>Service Type:</ControlLabel>
+              <FormControl
+                type="text"
+                placeholder="e.g. Car Service"
+                onChange={this.handleServiceTypeChange}
+              />
+
+              <Button bsStyle="primary" onClick={this.handleAddService}>ADD SERVICE</Button>
+
+              <h3>Services (You Can Add More Later)</h3>
+              {this.state.services.map(service =>
+                  <p key={uuid.v4()}>{service.serviceType}</p>
+              )}
+              <Button bsStyle="primary" onClick={this.handleCreateService}>CREATE</Button>
+            </FormGroup>
+          </div>
+        );
+      }
     }
 
     return (

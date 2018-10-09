@@ -10,6 +10,9 @@
     "test": "jest --watchAll --coverage",
     "precommit": "lint-staged"
   },
+  "lint-staged": {
+
+  },
   "jest": {
     "testEnvironment": "jsdom",
     "moduleDirectories": [
