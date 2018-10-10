@@ -5,28 +5,16 @@ import {
   Route,
   Link
 } from 'react-router-dom'
+import Home from './App.jsx';
 import About from './About.jsx';
 import Services from './Services.jsx';
 import TestPage from './AppTest.jsx';
-
-const Home = () => (
-  <div>
-    <h2>Home</h2>
-  </div>
-)
-
-const Topic = ({ match }) => (
-  <div>
-    <h3>{match.params.topicId}</h3>
-  </div>
-)
 
 class App extends Component {
     render() {
 
       return(
         <div>
-          <h1>YO</h1>
           <Router>
             <div>
               <ul>

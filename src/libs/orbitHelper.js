@@ -1,5 +1,3 @@
-import uuid from 'uuid';
-
 const IPFS = require('ipfs-api');
 const OrbitDB = require('orbit-db');
 
@@ -32,11 +30,11 @@ export const docsDb = async () => {
   await db.load();
   console.log(db.address.toString());
 
-  const hash = await db.put({ _id: new Date(), name: 'WHOOP', followers: 500 });
+  await db.put({ _id: new Date(), name: 'WHOOP', followers: 500 });
   const all = db.query(doc => doc.followers >= 1);
   console.log(all);
 
-  if (all.length == 0) {
+  if (all.length === 0) {
     console.log('Loading example data...');
   }
 };
@@ -51,7 +49,7 @@ export const LoadUsersCar = async UserAccount => {
 
   const all = db.query(doc => doc.owner == UserAccount);
 
-  if (all.length == 0) {
+  if (all.length === 0) {
     console.log('No Owner Cars');
   } else {
     console.log('Owner Cars: ');
@@ -60,7 +58,19 @@ export const LoadUsersCar = async UserAccount => {
 };
 
 export const LoadCars = async () => {
-  console.log('Loading Cars...')
+  /*
+  {
+    "_id": "bdb19370-ce3e-4799-b619-c53889180ee6",
+    "owner": "0xf8b908e7dbb3a0f2581aa8f1962f9360e10dc059",
+    "type": "Mustand",
+    "model": "Ford",
+    "year": "2018",
+    "picHash": "https://s-media-cache-ak0.pinimg.com/736x/4a/ed/fa/4aedfa93b3c8785d55fd20362a1480d4.jpg",
+    "isSelling": false,
+    "created": "2018-10-08T17:04:14.795Z"
+  }
+  */
+  console.log('Loading Cars...');
   ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
   orbitdb = new OrbitDB(ipfs);
   const db = await orbitdb.docs('cars');
@@ -68,18 +78,18 @@ export const LoadCars = async () => {
 
   const all = db.query(doc => doc);
 
-  if (all.length == 0) {
+  if (all.length === 0) {
     console.log('No Cars');
     return [];
-  } else {
-    console.log('Cars: ');
-    console.log(all);
-    return all;
   }
+
+  console.log('Cars: ');
+  console.log(all);
+  return all;
 };
 
 export const LoadServices = async () => {
-  console.log('Loading Services...')
+  console.log('Loading Services...');
   ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
   orbitdb = new OrbitDB(ipfs);
   const db = await orbitdb.docs('services');
@@ -145,7 +155,7 @@ export const saveRecord = async (DbName, Record) => {
   Product DB:
   {"_id":"eacdc32f-9b97-4dcd-b29f-642c2241624a","brand":"0xeefc64d684a2de1566b9a3368150cc882aa0b683","address":"0x9D827bbfE2D04e3c076384F5D659dE795e875C90","name": "Tyre","details":"PremiumTyre-17651","year":"2018","origin":"UK"}
   */
-  
+
   console.log('Saving record to: ' + DbName);
   console.log(Record);
   ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });

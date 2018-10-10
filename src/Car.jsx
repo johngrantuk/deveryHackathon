@@ -10,15 +10,13 @@ export default class Car extends React.Component {
           <Col sm={6} md={4} lg={3}>
             <Panel>
               <Panel.Heading>
-                <Panel.Title componentClass="h3">CAR{this.props.carInfo.model}: {this.props.carInfo.year}</Panel.Title>
+                <Panel.Title componentClass="h3">{this.props.carInfo.year}: {this.props.carInfo.model} {this.props.carInfo.type}</Panel.Title>
               </Panel.Heading>
               <Panel.Body>
-                <img role="presentation" style={{"width" : "100%"}} src={this.props.carInfo.picLink}/>
+                <img role="presentation" style={{"width" : "100%"}} src={this.props.carInfo.picHash}/>
                 <br/><br/>
-                <strong>Owner: </strong> <span>{this.props.carInfo.owner}</span><br/>
-                <strong>Bounty: </strong> <span>{this.props.carInfo.bountyEth}Eth</span><br/>
-                <strong>Info:</strong> <span>{this.props.carInfo.info}</span><br/>
-                <strong>Answers:</strong> <span>{this.props.carInfo.noAnswers}</span><br/>
+                <strong>Selling: </strong> <span>{this.props.carInfo.isSelling}</span><br/>
+
               </Panel.Body>
             </Panel>
           </Col>
