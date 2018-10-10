@@ -120,3 +120,58 @@ export const saveService = async Service => {
   const hash = await db.put(Service);
   console.log('Ok.');
 };
+
+export const LoadBrands = async () => {
+  console.log('Loading Brands...')
+  ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+  orbitdb = new OrbitDB(ipfs);
+  const db = await orbitdb.docs('brands');
+  await db.load();
+
+  const all = db.query(doc => doc);
+
+  if (all.length == 0) {
+    console.log('No Brands');
+    return [];
+  } else {
+    console.log('Brands: ');
+    console.log(all);
+    return all;
+  }
+};
+
+export const saveRecord = async (DbName, Record) => {
+  /*
+  Product DB:
+  {"_id":"eacdc32f-9b97-4dcd-b29f-642c2241624a","brand":"0xeefc64d684a2de1566b9a3368150cc882aa0b683","address":"0x9D827bbfE2D04e3c076384F5D659dE795e875C90","name": "Tyre","details":"PremiumTyre-17651","year":"2018","origin":"UK"}
+  */
+  
+  console.log('Saving record to: ' + DbName);
+  console.log(Record);
+  ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+  orbitdb = new OrbitDB(ipfs);
+  const db = await orbitdb.docs(DbName);
+  await db.load();
+
+  const hash = await db.put(Record);
+  console.log('Ok.');
+};
+
+export const LoadBrandProducts = async (BrandAddress) => {
+  console.log('Loading Brands...')
+  ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+  orbitdb = new OrbitDB(ipfs);
+  const db = await orbitdb.docs('products');
+  await db.load();
+
+  const all = db.query(doc => doc.brand.toLowerCase() == BrandAddress.toLowerCase());
+
+  if (all.length == 0) {
+    console.log('No Products');
+    return [];
+  } else {
+    console.log('Products: ');
+    console.log(all);
+    return all;
+  }
+};

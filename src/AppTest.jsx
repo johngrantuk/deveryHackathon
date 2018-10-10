@@ -8,6 +8,7 @@ import {
 } from 'react-bootstrap';
 import { hot } from 'react-hot-loader';
 import AddUser from './AddUser';
+import uuid from 'uuid';
 
 const devery = require('@devery/devery');
 const dbHelper = require('./libs/orbitHelper');
@@ -29,12 +30,19 @@ class App extends Component {
     this.handleAddBrandAddrChange = this.handleAddBrandAddrChange.bind(this);
     this.handleAddBrandNameChange = this.handleAddBrandNameChange.bind(this);
     this.handleAddBrand = this.handleAddBrand.bind(this);
+    this.handleSetAccount = this.handleSetAccount.bind(this);
+    this.handleMarkProductAddrChange = this.handleMarkProductAddrChange.bind(this);
+    this.handleSetAccountAddrChange = this.handleSetAccountAddrChange.bind(this);
 
     this.handleGetProduct = this.handleGetProduct.bind(this);
     this.handleProductAddrChange = this.handleProductAddrChange.bind(this);
     this.handleAddProductAddrChange = this.handleAddProductAddrChange.bind(this);
     this.handleAddProductNameChange = this.handleAddProductNameChange.bind(this);
     this.handleAddProduct = this.handleAddProduct.bind(this);
+
+    this.handleDbNameChange = this.handleDbNameChange.bind(this);
+    this.handleJsonChange = this.handleJsonChange.bind(this);
+    this.handleAddDb = this.handleAddDb.bind(this);
 
     this.state = {
       info: '',
@@ -51,14 +59,15 @@ class App extends Component {
       noApps: '0',
       account: 'Please sign in to MetaMask',
       checkBrandAddr: '',
-      brandInfo: ''
+      brandInfo: '',
+      markProductAddr: '0x2a6aa0af60f753e020030d5fe7cf1a6da3de9a81'
     };
     // console.log(devery.Utils.getRandomAddress());
 
     // this.getApp();
     setInterval(() => this.checkMetaMask(), 1000);
 
-    this.checkItemMarker();
+    //this.checkItemMarker();
   }
 
   checkMetaMask() {
@@ -91,7 +100,7 @@ class App extends Component {
   }
 
   handleProductAddrChange(e){
-    this.setState({checkProductAddr: e.target.value})
+    this.setState({checkProductAddr: e.target.value});
   }
 
   handleAddProductAddrChange(e){
@@ -128,6 +137,44 @@ class App extends Component {
 
   handleCheckItem() {
     this.checkItemMarker();
+  }
+
+  handleSetAccount() {
+    this.SetAccount();
+  }
+
+  handleMarkProductAddrChange(e) {
+    this.setState({markProductAddr: e.target.value});
+  }
+
+  handleSetAccountAddrChange(e) {
+    this.setState({ setAccountAddr: e.target.value});
+  }
+
+  handleDbNameChange(e) {
+    this.setState({dbName: e.target.value});
+  }
+
+  handleJsonChange(e) {
+    this.setState({jsonString: e.target.value});
+  }
+
+  handleAddDb(){
+    console.log('saving to db: ' + this.state.dbName);
+    console.log(this.state.jsonString);
+    let js = JSON.parse(this.state.jsonString);
+    console.log(js);
+
+    this.SaveToDb(this.state.dbName, js);
+  }
+
+  async SaveToDb(DbName, Record){
+    await dbHelper.saveRecord(DbName, Record);
+  }
+
+  async SetAccount(){
+    console.log('Setting: ' + this.state.setAccountAddr)
+    await deveryRegistryClient.permissionMarker(this.state.setAccountAddr, true);
   }
 
   async getApp() {
@@ -174,6 +221,11 @@ class App extends Component {
     } else {
       console.log(brand);
       this.setState({ brandInfo: brand });
+
+      let addressArr = await deveryRegistryClient.brandAccountsPaginated();
+       for(let address of addressArr){
+           console.log(address);
+       }
     }
   }
 
@@ -215,6 +267,7 @@ class App extends Component {
   }
 
   async checkItemMarker() {
+
     console.log('Checking Item: ' + this.state.itemAddress)
     const item = await deveryRegistryClient.check(this.state.itemAddress);
     this.setState({
@@ -229,8 +282,8 @@ class App extends Component {
       this.state.itemAddress,
     );
 
-    console.log(this.state.productAddress, hash);
-    await deveryRegistryClient.mark(this.state.productAddress, hash);
+    console.log(this.state.markProductAddr, hash);
+    await deveryRegistryClient.mark(this.state.markProductAddr, hash);
   }
 
   render() {
@@ -298,22 +351,9 @@ class App extends Component {
         <Button bsStyle="primary" onClick={this.handleAddProduct}>Add Product</Button>
         </FormGroup>
 
-        <FormGroup controlId="formControlProduct">
-          <ControlLabel>Product: {this.state.productName}</ControlLabel>
-          <FormControl
-            componentClass="textarea"
-            value={this.state.info}
-            placeholder="e.g. I saw this in Scotland in July."
-            onChange={this.handleInfoChange}
-          />
-          <Button bsStyle="primary" onClick={this.handleProduct}>
-            Get/Add Product
-          </Button>
-        </FormGroup>
-
         <FormGroup controlId="formControlMark">
           <ControlLabel>Product Address: </ControlLabel>
-          <FormControl type="text" value={this.state.productAddress} readOnly/>
+          <FormControl type="text" placeholder={this.state.markProductAddr} onChange={this.handleMarkProductAddrChange}/>
           <FormControl type="text" value={this.state.itemAddress} readOnly/>
           <Button bsStyle="primary" onClick={this.handleGenerateItem}>Generate Item</Button>
           <Button bsStyle="primary" onClick={this.handleMark}>Mark Item</Button>
@@ -328,7 +368,25 @@ class App extends Component {
           <Button bsStyle="primary" onClick={this.handleCheckItem}>
             Check Item
           </Button>
-        </FormGroup>
+          </FormGroup>
+
+          <FormGroup controlId="formControlItem">
+            <ControlLabel>Allow Account To Mark:</ControlLabel>
+            <FormControl type="text" placeholder={this.state.account} onChange={this.handleSetAccountAddrChange}/>
+          <Button bsStyle="primary" onClick={this.handleSetAccount}>
+            Set Account Ok
+          </Button>
+          </FormGroup>
+
+          <FormGroup controlId="formControlItem">
+            <h3>Add To Db: ({uuid.v4()})</h3>
+            <ControlLabel>DB Name:</ControlLabel>
+            <FormControl type="text" placeholder='i.e. brands' onChange={this.handleDbNameChange}/>
+            <ControlLabel>JSON String:</ControlLabel>
+            <FormControl type="text" placeholder='i.e. {"result":true, "count":42} ' onChange={this.handleJsonChange}/>
+            <Button bsStyle="primary" onClick={this.handleAddDb}>Add To Db</Button>
+          </FormGroup>
+
       </div>
     );
   }
