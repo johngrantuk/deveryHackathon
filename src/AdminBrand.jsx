@@ -91,15 +91,11 @@ export default class AdminBrand extends React.Component {
 
         <hr></hr>
         <h2>Your Products</h2>
-        <ProductList products={this.props.products}/>
-
         <br/><br/>
+        <div>
+          <ProductList products={this.props.products} cars={this.props.cars}/>
+        </div>
 
-        {this.props.products.map(product =>
-          <p key={product._id}>{product.name}: {product.address}</p>
-        )}
-
-        <p></p>
         <hr></hr>
 
         <FormGroup controlId="formControlsTextarea">

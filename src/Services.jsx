@@ -20,12 +20,15 @@ export default class Services extends React.Component {
       appAccount: 'Waiting To Load',
       appAddress: '0xf8b908e7DBb3a0f2581aa8F1962f9360e10DC059',
       brandInfo: {brandName: 'No Brand'},
-      brandProducts: []
+      brandProducts: [],
+      cars: []
     }
 
     setInterval(() => this.checkMetaMask(), 1000);
 
     this.getAppDetails();
+
+    this.getCars();
   }
 
   checkMetaMask() {
@@ -67,6 +70,12 @@ export default class Services extends React.Component {
     }
   }
 
+  async getCars() {
+    let cars = await dbHelper.LoadCars();
+
+    this.setState({cars: cars});
+  }
+
   render() {
 
     let servicePage;
@@ -82,7 +91,9 @@ export default class Services extends React.Component {
           <AdminBrand
           brandInfo={this.state.brandInfo}
           products={this.state.brandProducts}
-          account={this.state.account}/>
+          account={this.state.account}
+          cars={this.state.cars}
+          />
         </div>);
     }else{
       servicePage = (

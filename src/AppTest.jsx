@@ -44,6 +44,8 @@ class App extends Component {
     this.handleJsonChange = this.handleJsonChange.bind(this);
     this.handleAddDb = this.handleAddDb.bind(this);
 
+    this.handleitemAddrChange = this.handleitemAddrChange.bind(this);
+
     this.state = {
       info: '',
       appAddress: '0xf8b908e7DBb3a0f2581aa8F1962f9360e10DC059',
@@ -77,6 +79,10 @@ class App extends Component {
         account: web3.eth.accounts[0],
       });
     }
+  }
+
+  handleitemAddrChange(e){
+    this.setState({itemAddress: e.target.value});
   }
 
   handleBrandAddrChange(e){
@@ -354,7 +360,7 @@ class App extends Component {
         <FormGroup controlId="formControlMark">
           <ControlLabel>Product Address: </ControlLabel>
           <FormControl type="text" placeholder={this.state.markProductAddr} onChange={this.handleMarkProductAddrChange}/>
-          <FormControl type="text" value={this.state.itemAddress} readOnly/>
+          <FormControl type="text" value={this.state.itemAddress} onChange={this.handleitemAddrChange}/>
           <Button bsStyle="primary" onClick={this.handleGenerateItem}>Generate Item</Button>
           <Button bsStyle="primary" onClick={this.handleMark}>Mark Item</Button>
         </FormGroup>

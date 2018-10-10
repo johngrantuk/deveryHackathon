@@ -45,7 +45,7 @@ export default class Product extends React.Component {
           </Panel>
         </Col>
 
-        <MarkModal show={this.state.show} hide={this.handleClose}></MarkModal>
+        <MarkModal show={this.state.show} hide={this.handleClose} cars={this.props.cars}></MarkModal>
       </div>
     );
   }
