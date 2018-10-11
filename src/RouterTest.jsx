@@ -6,7 +6,6 @@ import {
   Link
 } from 'react-router-dom'
 import Home from './App.jsx';
-import About from './About.jsx';
 import Services from './Services.jsx';
 import TestPage from './AppTest.jsx';
 
@@ -19,7 +18,6 @@ class App extends Component {
             <div>
               <ul>
                 <li><Link to="/">Home</Link></li>
-                <li><Link to="/about">About</Link></li>
                 <li><Link to="/services">Manage Services</Link></li>
                 <li><Link to="/testpage">Test Page</Link></li>
               </ul>
@@ -27,7 +25,6 @@ class App extends Component {
               <hr/>
 
               <Route exact path="/" component={Home}/>
-              <Route path="/about" component={About}/>
               <Route path="/services" component={Services}/>
               <Route path="/testpage" component={TestPage}/>
             </div>

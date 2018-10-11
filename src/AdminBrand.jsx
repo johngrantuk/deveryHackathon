@@ -93,7 +93,7 @@ export default class AdminBrand extends React.Component {
         <h2>Your Products</h2>
         <br/><br/>
         <div>
-          <ProductList products={this.props.products} cars={this.props.cars}/>
+          <ProductList products={this.props.products} cars={this.props.cars} brandAccount={this.props.account}/>
         </div>
 
         <hr></hr>

@@ -152,8 +152,25 @@ export const LoadBrands = async () => {
 
 export const saveRecord = async (DbName, Record) => {
   /*
+  const newbrand = {
+    _id: uuid.v4(),
+    address: Addr,
+    name: Name
+  };
+
   Product DB:
   {"_id":"eacdc32f-9b97-4dcd-b29f-642c2241624a","brand":"0xeefc64d684a2de1566b9a3368150cc882aa0b683","address":"0x9D827bbfE2D04e3c076384F5D659dE795e875C90","name": "Tyre","details":"PremiumTyre-17651","year":"2018","origin":"UK"}
+
+  newItemMark = {
+    _id: uuid.v4(),
+    address: newItemAddress,
+    brand: this.props.brandAccount,
+    productAddress: this.props.product.address,
+    carId: this.state.selectedCarId,
+    date: new Date()
+  };
+
+
   */
 
   console.log('Saving record to: ' + DbName);

@@ -17,7 +17,6 @@ export default class Product extends React.Component {
   }
 
   handleMark(){
-    console.log("Marking");
     this.setState({ show: true });
   }
 
@@ -45,7 +44,13 @@ export default class Product extends React.Component {
           </Panel>
         </Col>
 
-        <MarkModal show={this.state.show} hide={this.handleClose} cars={this.props.cars}></MarkModal>
+        <MarkModal
+          show={this.state.show}
+          hide={this.handleClose}
+          cars={this.props.cars}
+          product={this.props.product}
+          brandAccount={this.props.brandAccount}
+          ></MarkModal>
       </div>
     );
   }
