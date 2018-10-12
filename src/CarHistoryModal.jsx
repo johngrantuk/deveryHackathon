@@ -33,7 +33,9 @@ export default class CarHistoryModal extends React.Component {
     console.log('Loading Items...')
     let items = await dbHelper.LoadCarItems(this.props.car._id);
     this.setState({items: items});
-    this.setState({loading: false})
+    this.setState({loading: false});
+    console.log(items)
+
   }
 
   modalLoaded(){
@@ -68,8 +70,15 @@ export default class CarHistoryModal extends React.Component {
           </div>
 
           <div>
-            {items.map(item =>
-              <div key={item._id}>{item.address} {item.date}</div>
+            {items.map(item => {
+              return(
+                <div key={item._id}>
+                  <h4>{item.date}: {item.brandName} - {item.productName}, {item.productDetail}</h4>
+                  <h5>Check Item Addr: {item.address}</h5>
+                </div>
+              )
+            }
+
             )}
           </div>
 

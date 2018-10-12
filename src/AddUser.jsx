@@ -8,10 +8,17 @@ import {
 } from 'react-bootstrap';
 import { Checkbox } from 'react-bootstrap';
 import uuid from 'uuid';
+import { css } from 'react-emotion';
+import { PropagateLoader } from 'react-spinners';
 
 const dbHelper = require('./libs/orbitHelper');
 
 const devery = require('@devery/devery');
+
+const override = css`
+    margin: 0 auto;
+    width: 0%;
+`;
 
 export default class AddUser extends React.Component {
   constructor(props, context) {
@@ -29,7 +36,8 @@ export default class AddUser extends React.Component {
     this.state = {
       show: false,
       isForSale: false,
-      pickLink: 'https://s-media-cache-ak0.pinimg.com/736x/4a/ed/fa/4aedfa93b3c8785d55fd20362a1480d4.jpg'
+      pickLink: 'https://s-media-cache-ak0.pinimg.com/736x/4a/ed/fa/4aedfa93b3c8785d55fd20362a1480d4.jpg',
+      loading: false
     };
   }
 
@@ -75,15 +83,23 @@ export default class AddUser extends React.Component {
       year: this.state.year,
       picHash: this.state.pickLink,
       isSelling: this.state.isForSale,
-      created: new Date(),
+      created: new Date()
     };
 
     console.log('Saving Car: ');
     console.log(car);
-    dbHelper.saveCar(car);
 
+    this.SaveCar(car);
     // NEED TO ADD AS PRODUCT
     // CLOSE MODAL AND UPDATE GUI
+  }
+
+  async SaveCar(Car){
+    this.setState({loading: true});
+    await dbHelper.saveCar(Car);
+    this.setState({loading: false});
+    this.setState({ show: false });
+    this.props.addCar(Car);
   }
 
   render() {
@@ -131,6 +147,17 @@ export default class AddUser extends React.Component {
                 <Button bsStyle="primary" onClick={this.handleCreate}>
                   CREATE
                 </Button>
+
+                <div className='sweet-loading'>
+                  <PropagateLoader
+                    className={override}
+                    sizeUnit={"px"}
+                    size={15}
+                    marginUnit={"px"}
+                    margin={10}
+                    loading={this.state.loading}
+                  />
+                </div>
               </FormGroup>
             </div>
           </Modal.Body>

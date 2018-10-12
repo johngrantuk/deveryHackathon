@@ -19,7 +19,7 @@ export default class ProductList extends React.Component {
               key={product._id}
               product={product}
               cars={this.props.cars}
-              brandAccount={this.props.brandAccount}
+              brandInfo={this.props.brandInfo}
               />
           )}
         </div>

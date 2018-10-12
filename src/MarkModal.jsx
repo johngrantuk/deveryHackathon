@@ -50,8 +50,11 @@ export default class MarkModal extends React.Component {
       const newItem = {
         _id: uuid.v4(),
         address: newItemAddress,
-        brand: this.props.brandAccount,
+        brandAddress: this.props.brandInfo.brandAccount,
+        brandName: this.props.brandInfo.brandName,
         productId: this.props.product._id,
+        productName: this.props.product.name,
+        productDetail: this.props.product.detail,
         carId: this.state.selectedCarId,
         date: new Date()
       };

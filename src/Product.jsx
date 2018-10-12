@@ -49,7 +49,7 @@ export default class Product extends React.Component {
           hide={this.handleClose}
           cars={this.props.cars}
           product={this.props.product}
-          brandAccount={this.props.brandAccount}
+          brandInfo={this.props.brandInfo}
           ></MarkModal>
       </div>
     );

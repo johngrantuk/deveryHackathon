@@ -22,6 +22,8 @@ class App extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.addCar = this.addCar.bind(this);
+
     this.state = {
       account: 'Please sign in to MetaMask to manage your vehicles.',
       cars: [],
@@ -57,6 +59,12 @@ class App extends Component {
     this.setState({cars: cars});
   }
 
+  addCar(Car) {
+    let cars = this.state.cars;
+    cars.push(Car);
+    this.setState({cars: cars});
+  }
+
   render() {
     return (
       <div>
@@ -64,7 +72,7 @@ class App extends Component {
           <div>
             <h1>Auto Tracker</h1>
             <p>User Account: {this.state.account}</p>
-            <AddUser account={this.state.account} deveryRegistryClient={deveryRegistryClient}/>
+            <AddUser account={this.state.account} deveryRegistryClient={deveryRegistryClient} addCar={this.addCar}/>
           </div>
         </Jumbotron>
 
