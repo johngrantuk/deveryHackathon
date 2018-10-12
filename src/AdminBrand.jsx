@@ -98,6 +98,9 @@ export default class AdminBrand extends React.Component {
 
       await dbHelper.saveRecord('products', Product);
 
+      let products = this.state.products;
+      products.push(Product);
+      this.setState({products: products});
       // NEED TO REFRESH GUI HERE IDEALLY WITHOUT A RELOAD
     }
     catch (err) {

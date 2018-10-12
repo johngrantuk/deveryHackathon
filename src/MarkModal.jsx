@@ -4,6 +4,7 @@ import uuid from 'uuid';
 import { css } from 'react-emotion';
 import { PropagateLoader} from 'react-spinners';
 
+
 const override = css`
     margin: 0 auto;
     width: 0%;
@@ -26,7 +27,8 @@ export default class MarkModal extends React.Component {
     this.state = {
       selectedCarId: null,
       cars: [],
-      loading: true
+      loading: true,
+      marking: false
     }
   }
 
@@ -64,6 +66,7 @@ export default class MarkModal extends React.Component {
   }
 
   async markItem(ProductAddress, ItemAddress, NewItem) {
+    this.setState({marking: true});
     console.log('Marking Item: ' + ItemAddress);
 
     const hash = await deveryRegistryClient.addressHash(ItemAddress);
@@ -75,6 +78,8 @@ export default class MarkModal extends React.Component {
     console.log(NewItem);
     await dbHelper.saveRecord('items', NewItem);
     console.log('Ok');
+    this.props.hide();
+    this.setState({marking: false});
   }
 
   yourChangeHandler(event){
@@ -112,6 +117,17 @@ export default class MarkModal extends React.Component {
             </FormControl>
 
             <Button bsStyle="primary" onClick={this.handleMark}>MARK</Button>
+
+            <div className='sweet-loading'>
+              <PropagateLoader
+                className={override}
+                sizeUnit={"px"}
+                size={15}
+                marginUnit={"px"}
+                margin={10}
+                loading={this.state.marking}
+              />
+            </div>
           </FormGroup>
 
         </Modal.Body>

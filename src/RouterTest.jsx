@@ -32,7 +32,7 @@ class App extends Component {
                     <Link to="/services">Manage Services</Link>
                   </NavItem>
                   <NavItem eventKey={3} href="#">
-                    <Link to="/testpage">Test</Link>
+                    <Link to="/explorer">Explorer</Link>
                   </NavItem>
                 </Nav>
               </Navbar>
@@ -42,7 +42,7 @@ class App extends Component {
 
               <Route exact path="/" component={Home}/>
               <Route path="/services" component={Services}/>
-              <Route path="/testpage" component={TestPage}/>
+              <Route path="/explorer" component={TestPage}/>
             </div>
           </Router>
         </div>
