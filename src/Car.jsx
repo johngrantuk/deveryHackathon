@@ -1,11 +1,13 @@
 import React from 'react';
 import {Col, Panel, Button} from 'react-bootstrap';
+import CarHistoryModal from './CarHistoryModal';
 
 export default class Car extends React.Component {
   constructor(props, context) {
     super(props, context);
 
     this.handleViewHistory = this.handleViewHistory.bind(this);
+    this.handleClose = this.handleClose.bind(this);
 
     this.state = {
       show: false,
@@ -15,8 +17,13 @@ export default class Car extends React.Component {
   }
 
   handleViewHistory(){
-    console.log('Load Modal and show items...')
+    this.setState({ show: true });
   }
+
+  handleClose() {
+    this.setState({ show: false });
+  }
+
   render() {
 
     return(
@@ -29,13 +36,17 @@ export default class Car extends React.Component {
             <Panel.Body>
               <img role="presentation" style={{"width" : "100%"}} src={this.props.carInfo.picHash}/>
               <br/><br/>
-              <strong>Selling: </strong> <span>{this.props.carInfo.isSelling}</span><br/>
-              <br/>
               <hr></hr>
               <Button bsStyle="primary" onClick={this.handleViewHistory}>View History</Button>
             </Panel.Body>
           </Panel>
         </Col>
+
+        <CarHistoryModal
+          show={this.state.show}
+          car={this.props.carInfo}
+          hide={this.handleClose}
+          ></CarHistoryModal>
       </div>
     );
   }

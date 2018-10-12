@@ -15,24 +15,30 @@ export default class Services extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      account: "Please Login",
-      appName: 'Waiting To Load',
+      account: "Please sign in to MetaMask to manage your services.",
+      appName: 'Waiting For MetaMask Login',
       appAccount: 'Waiting To Load',
       appAddress: '0xf8b908e7DBb3a0f2581aa8F1962f9360e10DC059',
       brandInfo: {brandName: 'No Brand'},
-      brandProducts: [],
-      cars: []
     }
 
+  }
+
+  componentWillMount() {
     setInterval(() => this.checkMetaMask(), 1000);
 
     this.getAppDetails();
-
-    this.getCars();
   }
+
 
   checkMetaMask() {
     // Checks for active MetaMask account info.
+    if(web3.eth.accounts[0] === undefined){
+      this.setState({
+        account: 'Please sign in to MetaMask to manage your services.',
+      });
+      return;
+    }
     if (web3.eth.accounts[0] !== this.state.account) {
       this.setState({
         account: web3.eth.accounts[0],
@@ -51,15 +57,14 @@ export default class Services extends React.Component {
     } else {
       console.log(brand);
       this.setState({ brandInfo: brand });
-
-      console.log('Getting Brand Products');
-
-      let products = await dbHelper.LoadBrandProducts(this.state.account);
-      this.setState({brandProducts: products});
     }
   }
 
   async getAppDetails() {
+
+    if(this.state.account === "Please sign in to MetaMask to manage your services."){
+      return;
+    }
 
     const app = await deveryRegistryClient.getApp(this.state.appAddress);
     if (app.active) {
@@ -68,12 +73,6 @@ export default class Services extends React.Component {
         appAccount: app.appAccount
       });
     }
-  }
-
-  async getCars() {
-    let cars = await dbHelper.LoadCars();
-
-    this.setState({cars: cars});
   }
 
   render() {
@@ -90,9 +89,7 @@ export default class Services extends React.Component {
         <div>
           <AdminBrand
           brandInfo={this.state.brandInfo}
-          products={this.state.brandProducts}
           account={this.state.account}
-          cars={this.state.cars}
           />
         </div>);
     }else{

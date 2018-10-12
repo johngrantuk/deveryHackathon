@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Navbar, Nav, NavItem} from 'react-bootstrap';
 import { hot } from 'react-hot-loader';
 import {
   BrowserRouter as Router,
@@ -16,11 +17,26 @@ class App extends Component {
         <div>
           <Router>
             <div>
-              <ul>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/services">Manage Services</Link></li>
-                <li><Link to="/testpage">Test Page</Link></li>
-              </ul>
+
+              <Navbar>
+                <Navbar.Header>
+                  <Navbar.Brand>
+                    Auto Tracker
+                  </Navbar.Brand>
+                </Navbar.Header>
+                <Nav>
+                  <NavItem eventKey={1} href="#" to="/">
+                    <Link to="/">Cars</Link>
+                  </NavItem>
+                  <NavItem eventKey={2} href="#">
+                    <Link to="/services">Manage Services</Link>
+                  </NavItem>
+                  <NavItem eventKey={3} href="#">
+                    <Link to="/testpage">Test</Link>
+                  </NavItem>
+                </Nav>
+              </Navbar>
+
 
               <hr/>
 

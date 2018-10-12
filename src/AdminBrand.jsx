@@ -7,12 +7,21 @@ import {
 } from 'react-bootstrap';
 import uuid from 'uuid';
 import ProductList from './ProductList';
+import { css } from 'react-emotion';
+import { PropagateLoader} from 'react-spinners';
+
 
 const dbHelper = require('./libs/orbitHelper');
 const devery = require('@devery/devery');
 
 const DeveryRegistry = devery.DeveryRegistry;
 const deveryRegistryClient = new DeveryRegistry();
+
+const override = css`
+    margin: 0 auto;
+    width: 0%;
+`;
+
 
 export default class AdminBrand extends React.Component {
 
@@ -24,6 +33,21 @@ export default class AdminBrand extends React.Component {
     this.handleYearChange = this.handleYearChange.bind(this);
     this.handleOriginChange = this.handleOriginChange.bind(this);
     this.handleAddProduct = this.handleAddProduct.bind(this);
+
+    this.state = {
+      loading: true,
+      products: []
+    };
+  }
+
+  componentWillMount() {
+    this.getProducts();
+  }
+
+  async getProducts(){
+    let products = await dbHelper.LoadBrandProducts(this.props.account);
+    this.setState({products: products});
+    this.setState({loading: false});
   }
 
   handleNameChange(e){
@@ -93,7 +117,18 @@ export default class AdminBrand extends React.Component {
         <h2>Your Products</h2>
         <br/><br/>
         <div>
-          <ProductList products={this.props.products} cars={this.props.cars} brandAccount={this.props.account}/>
+          <div className='sweet-loading'>
+            <PropagateLoader
+              className={override}
+              sizeUnit={"px"}
+              size={15}
+              marginUnit={"px"}
+              margin={10}
+              loading={this.state.loading}
+            />
+          </div>
+
+          <ProductList products={this.state.products} cars={this.props.cars} brandAccount={this.props.account}/>
         </div>
 
         <hr></hr>

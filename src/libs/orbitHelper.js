@@ -202,3 +202,23 @@ export const LoadBrandProducts = async (BrandAddress) => {
     return all;
   }
 };
+
+export const LoadCarItems = async (ID) => {
+  console.log('Loading Items for: ' + ID);
+  ipfs = new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+  orbitdb = new OrbitDB(ipfs);
+  const db = await orbitdb.docs('items');
+  await db.load();
+
+  const all = db.query(doc => doc.carId == ID);
+
+  if (all.length == 0) {
+    console.log('No Items');
+    return [];
+  } else {
+    console.log('Items: ');
+    console.log(all);
+    return all;
+  }
+
+}
