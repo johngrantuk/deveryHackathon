@@ -78,7 +78,7 @@ export default class Services extends React.Component {
   render() {
 
     let servicePage;
-    if (this.state.account.toLowerCase() == this.state.appAccount.toLowerCase()) {
+    if (this.state.account.toLowerCase() == this.state.appAddress.toLowerCase()) {
       servicePage = (
         <div>
           <h4>Your Account: {this.state.account}</h4>

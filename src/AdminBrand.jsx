@@ -36,18 +36,28 @@ export default class AdminBrand extends React.Component {
 
     this.state = {
       loading: true,
-      products: []
+      products: [],
+      items: []
     };
   }
 
   componentWillMount() {
     this.getProducts();
+    this.loadItems();
   }
 
   async getProducts(){
     let products = await dbHelper.LoadBrandProducts(this.props.account);
     this.setState({products: products});
     this.setState({loading: false});
+  }
+
+  async loadItems(){
+    console.log('Loading Items...')
+    let items = await dbHelper.LoadBrandItems(this.props.account);
+    this.setState({items: items});
+    console.log(items)
+
   }
 
   handleNameChange(e){
@@ -110,6 +120,8 @@ export default class AdminBrand extends React.Component {
 
   render() {
 
+    const items = this.state.items;
+
     return(
       <div>
         <h1>Admin - {this.props.brandInfo.brandName}</h1>
@@ -154,6 +166,23 @@ export default class AdminBrand extends React.Component {
           <p/>
           <Button bsStyle="primary" onClick={this.handleAddProduct}>Add Product</Button>
         </FormGroup>
+
+        <hr></hr>
+
+        <h2>Job History</h2>
+
+        <div>
+          {items.map(item => {
+            return(
+              <div key={item._id}>
+                <h4>{item.date}: {item.brandName} - {item.productName}, {item.productDetail}</h4>
+                <h5>Check Item Addr: {item.address}</h5>
+                <h5>Car ID: {item.carId}</h5>
+              </div>
+            )
+          }
+          )}
+        </div>
 
       </div>
     );

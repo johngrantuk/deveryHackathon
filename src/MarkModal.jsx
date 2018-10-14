@@ -32,7 +32,7 @@ export default class MarkModal extends React.Component {
     }
   }
 
-  componentWillMount() {
+  modalLoaded(){
     this.getCars();
   }
 
@@ -91,7 +91,7 @@ export default class MarkModal extends React.Component {
     const cars = this.state.cars;
 
     return (
-      <Modal show={this.props.show} onHide={this.props.hide}>
+      <Modal show={this.props.show} onHide={this.props.hide} onEntered={this.modalLoaded.bind(this)}>
         <Modal.Header closeButton>
           <Modal.Title>Mark A {this.props.product.name} Job</Modal.Title>
         </Modal.Header>

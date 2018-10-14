@@ -55,6 +55,10 @@ export default class Admin extends React.Component {
 
       const brand = await deveryRegistryClient.addBrand(Addr, Name);
       await dbHelper.saveRecord('brands', newbrand);
+
+      let br = this.state.brands;
+      br.push(newbrand);
+      this.setState({brands: br});
     }
     catch (err) {
       console.log(err);
@@ -90,6 +94,7 @@ export default class Admin extends React.Component {
           </FormGroup>
 
           <hr></hr>
+          <h3>Existing Brands:</h3>
           {this.state.brands.map(brand =>
             <p key={brand._id}>{brand.name}: {brand.address}</p>
           )}

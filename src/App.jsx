@@ -3,7 +3,6 @@ import { Jumbotron } from 'react-bootstrap';
 import { hot } from 'react-hot-loader';
 import AddUser from './AddUser';
 import CarList from './CarList';
-import ServiceList from './ServiceList';
 import { css } from 'react-emotion';
 import { PropagateLoader} from 'react-spinners';
 
