@@ -6,9 +6,9 @@ import {
   Route,
   Link
 } from 'react-router-dom'
-import Home from './App.jsx';
+import Home from './Cars.jsx';
 import Services from './Services.jsx';
-import TestPage from './AppTest.jsx';
+import Explorer from './Explorer.jsx';
 
 class App extends Component {
     render() {
@@ -42,7 +42,7 @@ class App extends Component {
 
               <Route exact path="/" component={Home}/>
               <Route path="/services" component={Services}/>
-              <Route path="/explorer" component={TestPage}/>
+              <Route path="/explorer" component={Explorer}/>
             </div>
           </Router>
         </div>

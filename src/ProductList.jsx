@@ -3,7 +3,9 @@ import Product from './Product';
 import {Row } from 'react-bootstrap';
 
 export default class ProductList extends React.Component {
-
+  /*
+  Loads all products.
+  */
   constructor(props, context) {
     super(props, context);
   }

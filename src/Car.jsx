@@ -3,6 +3,9 @@ import {Col, Panel, Button} from 'react-bootstrap';
 import CarHistoryModal from './CarHistoryModal';
 
 export default class Car extends React.Component {
+  /**
+  Shows information for individual car.
+  **/
   constructor(props, context) {
     super(props, context);
 

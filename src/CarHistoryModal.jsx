@@ -17,7 +17,9 @@ const DeveryRegistry = devery.DeveryRegistry;
 const deveryRegistryClient = new DeveryRegistry();
 
 export default class CarHistoryModal extends React.Component {
-
+  /*
+  Loads and displays marked history for individual car.
+  */
   constructor(props, context){
     super(props, context);
 

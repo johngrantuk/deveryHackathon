@@ -3,7 +3,9 @@ import {Col, Panel, Button } from 'react-bootstrap';
 import MarkModal from './MarkModal';
 
 export default class Product extends React.Component {
-
+  /*
+  Shows Product information.
+  */
   constructor(props, context){
     super(props, context);
 

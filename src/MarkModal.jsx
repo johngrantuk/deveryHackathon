@@ -18,7 +18,10 @@ const DeveryRegistry = devery.DeveryRegistry;
 const deveryRegistryClient = new DeveryRegistry();
 
 export default class MarkModal extends React.Component {
-
+  /*
+  Modal that allows user to mark a selected car for a product item.
+  Generates a random address for new item and hashes before marking.
+  */
   constructor(props, context){
     super(props, context);
 

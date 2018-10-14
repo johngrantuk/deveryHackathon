@@ -21,6 +21,10 @@ const override = css`
 `;
 
 export default class AddUser extends React.Component {
+  /**
+  Component used to add a new user car.
+  Saves to 'cars' db.
+  **/
   constructor(props, context) {
     super(props, context);
 
@@ -42,6 +46,7 @@ export default class AddUser extends React.Component {
   }
 
   handleSaleChange(e) {
+    // Handles change of for sale in GUI.
     console.log('start' + this.state.isForSale);
     const value = !this.state.isForSale;
     this.setState({ isForSale: value });
@@ -49,31 +54,37 @@ export default class AddUser extends React.Component {
   }
 
   handleYearChange(e) {
+    // Handles change of year in GUI.
     this.setState({ year: e.target.value });
   }
 
   handleTypeChange(e) {
+    // Handles change of for type in GUI.
     this.setState({ type: e.target.value });
   }
 
   handleModelChange(e) {
+    // Handles change of for model in GUI.
     this.setState({ model: e.target.value });
   }
 
   handleClose() {
+    // Handles modal close.
     this.setState({ show: false });
   }
 
   handleShow() {
+    // Handles modal open.
     this.setState({ show: true });
   }
 
   handlePicLinkChange(e){
+    // Handles change of pic link in GUI.
     this.setState({pickLink: e.target.value});
   }
 
   handleCreate() {
-    // console.log(this.state.info);
+    // Creates new car record in cars db.
 
     const car = {
       _id: uuid.v4(),
@@ -90,13 +101,12 @@ export default class AddUser extends React.Component {
     console.log(car);
 
     this.SaveCar(car);
-    // NEED TO ADD AS PRODUCT
-    // CLOSE MODAL AND UPDATE GUI
+    // COULD ADD AS PRODUCT ON BLOCKCHAIN IN FUTURE?
   }
 
   async SaveCar(Car){
     this.setState({loading: true});
-    await dbHelper.saveCar(Car);
+    await dbHelper.saveCar(Car);              // Saves record to OrbitDB.
     this.setState({loading: false});
     this.setState({ show: false });
     this.props.addCar(Car);

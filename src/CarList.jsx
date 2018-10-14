@@ -2,7 +2,7 @@ import React from 'react';
 import Car from './Car';
 
 export default class CarList extends React.Component {
-
+  // Loads all car saved.
   constructor(props, context) {
     super(props, context);
   }

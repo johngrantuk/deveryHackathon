@@ -15,7 +15,10 @@ const dbHelper = require('./libs/orbitHelper');
 const DeveryRegistry = devery.DeveryRegistry;
 const deveryRegistryClient = new DeveryRegistry();
 
-class App extends Component {
+class Explorer extends Component {
+  /*
+  Devery explorer page allowing user to check marked items, etc.
+  */
   constructor(props, context) {
     super(props, context);
 
@@ -490,4 +493,4 @@ class App extends Component {
   }
 }
 
-export default hot(module)(App);
+export default hot(module)(Explorer);

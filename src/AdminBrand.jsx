@@ -24,7 +24,9 @@ const override = css`
 
 
 export default class AdminBrand extends React.Component {
-
+  /**
+  Component that allows user to admin their brand.
+  **/
   constructor(props, context) {
     super(props, context);
 

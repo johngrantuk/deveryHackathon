@@ -14,7 +14,10 @@ const DeveryRegistry = devery.DeveryRegistry;
 const deveryRegistryClient = new DeveryRegistry();
 
 export default class Admin extends React.Component {
-
+  /**
+  Component for the App admin.
+  This will be account 0 in MetaMask as this is account that created originally.
+  **/
   constructor(props, context) {
     super(props, context);
 

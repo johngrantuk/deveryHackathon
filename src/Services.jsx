@@ -11,7 +11,9 @@ const deveryRegistryClient = new DeveryRegistry();
 const dbHelper = require('./libs/orbitHelper');
 
 export default class Services extends React.Component {
-
+  /*
+  Loads services for brand matching MetaMask account.
+  */
   constructor(props, context) {
     super(props, context);
     this.state = {

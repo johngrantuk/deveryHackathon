@@ -17,7 +17,10 @@ const override = css`
     width: 0%;
 `;
 
-class App extends Component {
+class Cars extends Component {
+  /**
+  Component shows all cars currently saved to service.
+  **/
   constructor(props, context) {
     super(props, context);
 
@@ -92,4 +95,4 @@ class App extends Component {
   }
 }
 
-export default hot(module)(App);
+export default hot(module)(Cars);
